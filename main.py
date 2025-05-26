@@ -6,6 +6,7 @@
 """
 
 import datetime as dt
+from typing import Optional, Union
 
 FORMAT = "%H:%M:%S"
 WEIGHT = 75  # Вес
@@ -15,10 +16,10 @@ K_2 = 0.029  # Коэффициент для подсчета калорий
 STEP_M = 0.65  # Длина шага в метрах
 
 
-storage_data: dict[dt._Time, int] = {}
+storage_data: dict[dt.time, int] = {}
 
 
-def check_correct_data(data: tuple[str | None, int | None]) -> bool:
+def check_correct_data(data: tuple[Optional[str], Optional[int]]) -> bool:
     """Проверка корректности полученного пакета."""
     length = len(data)
     if length != 2 or \
@@ -27,7 +28,7 @@ def check_correct_data(data: tuple[str | None, int | None]) -> bool:
     return True
 
 
-def check_correct_time(time: dt._Time) -> bool:
+def check_correct_time(time: dt.time) -> bool:
     """Проверка корректности параметра времени."""
     if storage_data and \
             time <= max(storage_data):
@@ -46,7 +47,7 @@ def get_distance(steps: int) -> float:
     return steps * STEP_M / 1000
 
 
-def get_spent_calories(dist: float, current_time: dt._Time) -> float:
+def get_spent_calories(dist: float, current_time: dt.time) -> float:
     """Получить значения потраченных калорий."""
     time = current_time.hour + current_time.minute / 60
     mean_speed = (dist / time)
@@ -65,7 +66,7 @@ def get_achievement(dist: float) -> str:
     return 'Отличный результат! Цель достигнута.'
 
 
-def show_message(time: dt._Time, steps: int, dist: float,
+def show_message(time: dt.time, steps: int, dist: float,
                  calories: float, achiev: str) -> None:
     """Вывести на экран результаты вычислений."""
     print(f'''
@@ -77,8 +78,8 @@ def show_message(time: dt._Time, steps: int, dist: float,
         ''')
 
 
-def accept_package(data: tuple[str | None, int | None]) \
-        -> str | dict[dt._Time, int]:
+def accept_package(data: tuple[Optional[str], Optional[int]]) \
+        -> Union[str, dict[dt.time, int]]:
     """Обработать пакет данных."""
     if not check_correct_data(data):
         return 'Некорректный пакет'

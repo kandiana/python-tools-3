@@ -1,7 +1,10 @@
+"""Тесты аннотаций."""
+
 import datetime
 
 
-def test_exists_annotations():
+def test_exists_annotations() -> None:
+    """Аннотации существуют."""
     from main import __annotations__ as actual_annotations
 
     assert "storage_data" in actual_annotations, (
